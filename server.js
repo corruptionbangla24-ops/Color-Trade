@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, './')));
 
 // 🎰 আপনার ওরিজিনাল মেইন সাইটের ডাটাবেজ ব্যাকএন্ড লিঙ্ক
-const MAIN_SITE_URL = "https://onrender.com"; 
+const MAIN_SITE_URL = "https://betlover247.onrender.com"; 
 
 // 📥 একটিভ বাজি ট্র্যাকিং মেমোরি কন্টেইনার (উইনিং ব্যালেন্স অটো-প্লাসের জন্য মাস্টার অবজেক্ট)
 let activeWingoBets = [];
