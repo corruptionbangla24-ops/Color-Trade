@@ -14,18 +14,20 @@ socket.on("wingoUpdate", (data) => {
         let sec = currentModeData.timeLeft % 60;
         document.getElementById('timer').innerText = String(min).padStart(2, '0') + ":" + String(sec).padStart(2, '0');
         
+        // সেফটি চেক: পপআপের কনফার্ম বাটনটি পেজে আছে কিনা নিশ্চিত করা
         const confirmBtn = document.querySelector('.confirm-btn');
-        if (currentModeData.timeLeft <= 5) {
-            if (confirmBtn) {
+        if (confirmBtn) {
+            if (currentModeData.timeLeft <= 5) {
                 confirmBtn.disabled = true;
                 confirmBtn.innerText = "Locked";
                 confirmBtn.style.background = "#aaa";
-            }
-        } else {
-            if (confirmBtn) {
-                confirmBtn.disabled = false;
-                confirmBtn.innerText = "Confirm ৳" + (base * qty * mult).toFixed(2);
-                confirmBtn.style.background = "var(--green)";
+            } else {
+                // ইউজার অলরেডি সাবমিট করে থাকলে সকেট যেন আবার বাটন আনলক না করে
+                if (confirmBtn.getAttribute('data-loading') !== 'true') {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerText = "Confirm ৳" + (base * qty * mult).toFixed(2);
+                    confirmBtn.style.background = "var(--green)";
+                }
             }
         }
     }
@@ -80,7 +82,14 @@ function chgQ(v) {
 
 function updateUI() {
     document.getElementById('qtyVal').innerText = qty;
-    document.getElementById('tot').innerText = (base * qty * mult).toFixed(2);
+    const total = (base * qty * mult).toFixed(2);
+    document.getElementById('tot').innerText = total;
+    
+    // পপআপের ভেতরের বাটনের লেখাও সাথে সাথে আপডেট করা
+    const confirmBtn = document.querySelector('.confirm-btn');
+    if (confirmBtn && !confirmBtn.disabled) {
+        confirmBtn.innerText = "Confirm ৳" + total;
+    }
 }
 
 function switchMode(s, el) {
@@ -90,11 +99,21 @@ function switchMode(s, el) {
     document.getElementById('history').innerHTML = "";
 }
 
-// 🚀 ব্যালেন্স কাটার বাজি বাটন
+// 🚀 ব্যালেন্স কাটার বাজি বাটন (সুরক্ষিত)
 async function confirmBet() {
     const totalAmount = base * qty * mult;
     if (!urlUserId || totalAmount <= 0) return;
+
+    const confirmBtn = document.querySelector('.confirm-btn');
+    if (!confirmBtn || confirmBtn.disabled) return;
+
     try {
+        // ডাবল ক্লিক আটকাতে বাটন লক করা
+        confirmBtn.disabled = true;
+        confirmBtn.setAttribute('data-loading', 'true');
+        confirmBtn.innerText = "Processing...";
+        confirmBtn.style.background = "#aaa";
+
         const response = await fetch('/api/wingo-bet', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -118,5 +137,10 @@ async function confirmBet() {
     } catch (error) {
         console.error("WinGo connection error:", error);
         alert("⚠️ Connection Timeout!");
+    } finally {
+        // রিকোয়েস্ট শেষ হলে বাটন থেকে লোডিং স্টেট সরানো
+        if (confirmBtn) {
+            confirmBtn.removeAttribute('data-loading');
+        }
     }
 }
