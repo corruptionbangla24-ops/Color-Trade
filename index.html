@@ -62,6 +62,7 @@
         .qty-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 5px; }
         .qty-btn { width: 35px; height: 35px; background: #fff; border: 2px solid var(--dark); border-radius: 5px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 2px var(--dark); user-select: none; }
         .confirm-btn { width: 100%; padding: 12px; background: var(--green); color: white; font-weight: bold; font-size: 16px; border: 2px solid var(--dark); border-radius: 8px; cursor: pointer; box-shadow: 0 4px var(--dark); }
+        .confirm-btn:disabled { background: #aaa !important; cursor: not-allowed; box-shadow: none; transform: none; }
         
         /* 📊 টেবিল লগ */
         table { width: 100%; margin: auto; border-collapse: collapse; border: 2px solid var(--dark); font-size: 11px; background: #fff; border-radius: 6px; overflow: hidden; margin-top: 10px; }
@@ -72,11 +73,12 @@
 <body>
 
 <div class="app-container">
-    <!-- 🎰 [ক্যাসিনো ব্র্যান্ড লোগো লক ২.০]: গেমের নাম ১০০% মিলিয়ে 'Color-Trade' অফিশিয়াল লোগো সেট করা হলো ভাই -->
+    <!-- 🎰 ক্যাসিনো ব্র্যান্ড লোগো -->
     <div style="text-align: center; padding: 10px 0; margin-bottom: 12px; background: #fff; border: 2px solid var(--dark); border-radius: 8px; font-weight: bold; font-size: 15px; letter-spacing: 1px; color: var(--dark); box-shadow: 0 2px var(--dark);">
         🎰 BETLOVER24 COLOR-TRADE
     </div>
 
+    <!-- মোড সিলেকশন ট্যাব -->
     <div class="tabs">
         <div class="tab active" onclick="switchMode(30, this)">WinGo 30s</div>
         <div class="tab" onclick="switchMode(60, this)">1 Min</div>
@@ -84,6 +86,7 @@
         <div class="tab" onclick="switchMode(300, this)">5 Min</div>
     </div>
 
+    <!-- টাইমার কার্ড -->
     <div class="timer-card">
         <div>
             <div style="font-size:11px; opacity:0.8; font-weight:bold; margin-bottom:2px;">Period Number</div>
@@ -95,12 +98,14 @@
         </div>
     </div>
 
+    <!-- কালার বাটনসমূহ -->
     <div class="color-btns">
         <div class="c-btn bg-green" onclick="openPop('Green')">Green</div>
         <div class="c-btn bg-violet" onclick="openPop('Violet')">Violet</div>
         <div class="c-btn bg-red" onclick="openPop('Red')">Red</div>
     </div>
 
+    <!-- নম্বর গ্রিড -->
     <div class="number-grid">
         <div class="n-circle n-0" onclick="openPop('0')">0</div>
         <div class="n-circle n-1" onclick="openPop('1')">1</div>
@@ -114,48 +119,213 @@
         <div class="n-circle n-9" onclick="openPop('9')">9</div>
     </div>
 
+    <!-- মাল্টিপ্লায়ার বাটন -->
     <div class="multi-row">
         <div class="m-chip active" onclick="setMultiplier(1, this)">X1</div>
         <div class="m-chip" onclick="setMultiplier(5, this)">X5</div>
         <div class="m-chip" onclick="setMultiplier(10, this)">X10</div>
-        <div class="m-chip" onclick="setMultiplier(100, this)">X100</div>
+        <div class="m-chip" onclick="setMultiplier(20, this)">X20</div>
     </div>
 
+    <!-- বিগ/স্মল বাটনসমূহ -->
     <div class="bs-row">
         <div class="bs-btn b-big" onclick="openPop('Big')">Big</div>
         <div class="bs-btn b-small" onclick="openPop('Small')">Small</div>
     </div>
 
+    <!-- হিস্টোরি টেবিল -->
     <table>
         <thead>
-            <tr><th>Period</th><th>Number</th><th>Big Small</th><th>Color</th></tr>
+            <tr>
+                <th>Period</th>
+                <th>Number</th>
+                <th>Size</th>
+                <th>Color</th>
+            </tr>
         </thead>
-        <tbody id="history"></tbody>
+        <tbody id="history">
+            <!-- সকেট থেকে ডাটা এখানে আসবে -->
+        </tbody>
     </table>
 </div>
 
-<!-- মডাল উইন্ডো পপআপ ট্যাগস -->
+<!-- 🔳 পপআপ মডাল উইন্ডো -->
 <div class="overlay" id="over" onclick="closePop()"></div>
 <div class="modal" id="nodal">
-    <div class="m-header">WinGo <span id="m-mode-txt">30s</span><span class="sel-tag" id="sel">-</span></div>
-    <div class="chip-row">
-        <div class="chip active" onclick="setBase(10, this)">10</div>
-        <div class="chip" onclick="setBase(100, this)">100</div>
-        <div class="chip" onclick="setBase(500, this)">500</div>
-        <div class="chip" onclick="setBase(1000, this)">1000</div>
+    <div class="m-header">
+        WinGo <span id="m-mode-txt">30s</span>
+        <span class="sel-tag" id="sel">Green</span>
     </div>
+    
+    <!-- বেস অ্যামাউন্ট চিপস -->
+    <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px;">Select Amount:</div>
+    <div class="chip-row">
+        <div class="chip active" onclick="setBase(10, this)">৳10</div>
+        <div class="chip" onclick="setBase(100, this)">৳100</div>
+        <div class="chip" onclick="setBase(500, this)">৳500</div>
+        <div class="chip" onclick="setBase(1000, this)">৳1000</div>
+    </div>
+
+    <!-- কোয়ান্টিটি সিলেক্টর -->
     <div class="qty-row">
-        <span style="font-weight:bold; color:#555;">Quantity</span>
-        <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size: 13px; font-weight: bold;">Quantity:</span>
+        <div style="display: flex; align-items: center; gap: 10px;">
             <button class="qty-btn" onclick="chgQ(-1)">-</button>
-            <b id="qtyVal" style="font-size:16px;">1</b>
+            <span id="qtyVal" style="font-size: 16px; font-weight: bold; min-width: 20px; text-align: center;">1</span>
             <button class="qty-btn" onclick="chgQ(1)">+</button>
         </div>
     </div>
-    <button class="confirm-btn" onclick="confirmBet()">Confirm ৳<span id="tot">10.00</span></button>
+
+    <!-- টোটাল অ্যামাউন্ট ও কনফার্ম বাটন -->
+    <div style="margin-bottom: 15px; font-size: 14px; font-weight: bold; text-align: right;">
+        Total Amount: ৳<span id="tot">10.00</span>
+    </div>
+    <button class="confirm-btn" onclick="confirmBet()">Confirm ৳10.00</button>
 </div>
 
-<script src="https://socket.io"></script>
-<script src="script.js"></script>
+<!-- 🔌 সকেট ও জাভাস্ক্রিপ্ট লজিক স্ক্রিপ্ট -->
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+let mode = 30, base = 10, qty = 1, mult = 1, selectedType = "";
+
+const urlParams = new URLSearchParams(window.location.search);
+const urlUserId = urlParams.get('userId') || urlParams.get('id') || urlParams.get('username') || "guest_user";
+const urlWallet = urlParams.get('wallet') || "main";
+
+// ⏳ টাইমার ও পিরিয়ড সিঙ্ক লক লজিক
+socket.on("wingoUpdate", (data) => {
+    if (data && data[mode]) {
+        const currentModeData = data[mode];
+        document.getElementById('p-num').innerText = currentModeData.period;
+        let min = Math.floor(currentModeData.timeLeft / 60);
+        let sec = currentModeData.timeLeft % 60;
+        document.getElementById('timer').innerText = String(min).padStart(2, '0') + ":" + String(sec).padStart(2, '0');
+        
+        const confirmBtn = document.querySelector('.confirm-btn');
+        if (confirmBtn) {
+            if (currentModeData.timeLeft <= 5) {
+                confirmBtn.disabled = true;
+                confirmBtn.innerText = "Locked";
+            } else {
+                // ইউজার বেট সাবমিট করে থাকলে সকেট যেন বাটনের লেখা রিসেট না করে
+                if (confirmBtn.getAttribute('data-loading') !== 'true') {
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerText = "Confirm ৳" + (base * qty * mult).toFixed(2);
+                }
+            }
+        }
+    }
+});
+
+// 🏆 রেজাল্ট হিস্টোরি টেবিল সিঙ্ক
+socket.on("wingoResult", (data) => {
+    if (data && data.mode === mode) {
+        let sizeColor = data.size === "Big" ? "color:#ffa000;" : "color:#40c4ff;";
+        let clrColor = data.color === "Green" ? "color:var(--green);" : (data.color === "Red" ? "color:var(--red);" : "color:var(--violet);");
+        let row = "<tr><td>" + data.period + "</td><td>" + data.number + "</td><td style='" + sizeColor + "'>" + data.size + "</td><td style='" + clrColor + "'>" + data.color + "</td></tr>";
+        document.getElementById('history').innerHTML = row + document.getElementById('history').innerHTML;
+        if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
+    }
+});
+
+// 🔘 বাটন ফাংশনসমূহ (পপআপ ও ক্যালকুলেশন)
+function openPop(n) {
+    selectedType = n;
+    document.getElementById('sel').innerText = n;
+    document.getElementById('m-mode-txt').innerText = mode + "s";
+    document.getElementById('over').style.display = 'block';
+    document.getElementById('nodal').style.display = 'block';
+    qty = 1;
+    updateUI();
+}
+
+function closePop() {
+    document.getElementById('over').style.display = 'none';
+    document.getElementById('nodal').style.display = 'none';
+}
+
+function setBase(v, el) {
+    base = v;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+    updateUI();
+}
+
+function setMultiplier(v, el) {
+    mult = v;
+    document.querySelectorAll('.m-chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+    updateUI();
+}
+
+function chgQ(v) {
+    qty = Math.max(1, qty + v);
+    updateUI();
+}
+
+function updateUI() {
+    document.getElementById('qtyVal').innerText = qty;
+    const total = (base * qty * mult).toFixed(2);
+    document.getElementById('tot').innerText = total;
+    
+    const confirmBtn = document.querySelector('.confirm-btn');
+    if (confirmBtn && !confirmBtn.disabled && confirmBtn.getAttribute('data-loading') !== 'true') {
+        confirmBtn.innerText = "Confirm ৳" + total;
+    }
+}
+
+function switchMode(s, el) {
+    mode = s;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    if (el) el.classList.add('active');
+    document.getElementById('history').innerHTML = "";
+}
+
+// 🚀 নিরাপদ বাজি বাটন লজিক (ডাবল ক্লিক প্রোটেক্টেড)
+async function confirmBet() {
+    const totalAmount = base * qty * mult;
+    if (!urlUserId || totalAmount <= 0) return;
+
+    const confirmBtn = document.querySelector('.confirm-btn');
+    if (!confirmBtn || confirmBtn.disabled) return;
+
+    try {
+        // ডাবল ক্লিক আটকাতে বাটন লক করা
+        confirmBtn.disabled = true;
+        confirmBtn.setAttribute('data-loading', 'true');
+        confirmBtn.innerText = "Processing...";
+
+        const response = await fetch('/api/wingo-bet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                userId: urlUserId,
+                amount: totalAmount,
+                wallet: urlWallet,
+                selection: selectedType,
+                mode: mode,
+                period: document.getElementById('p-num').innerText
+            })
+        });
+        const result = await response.json();
+        if (result.success) {
+            alert("🎯 Bet Placed Successfully!");
+            if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
+            closePop();
+        } else {
+            alert(result.message || "Bet Declined!");
+        }
+    } catch (error) {
+        console.error("WinGo connection error:", error);
+        alert("⚠️ Connection Timeout!");
+    } finally {
+        if (confirmBtn) {
+            confirmBtn.removeAttribute('data-loading');
+        }
+    }
+}
+</script>
 </body>
 </html>
+
