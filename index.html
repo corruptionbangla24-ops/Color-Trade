@@ -142,3 +142,20 @@
         <div class="chip active" onclick="setBase(10, this)">10</div>
         <div class="chip" onclick="setBase(100, this)">100</div>
         <div class="chip" onclick="setBase(500, this)">500</div>
+        <div class="chip" onclick="setBase(1000, this)">1000</div>
+    </div>
+    <div class="qty-row">
+        <span style="font-weight:bold; color:#555;">Quantity</span>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <button class="qty-btn" onclick="chgQ(-1)">-</button>
+            <b id="qtyVal" style="font-size:16px;">1</b>
+            <button class="qty-btn" onclick="chgQ(1)">+</button>
+        </div>
+    </div>
+    <button class="confirm-btn" onclick="confirmBet()">Confirm ৳<span id="tot">10.00</span></button>
+</div>
+
+<script src="https://socket.io"></script>
+<script src="script.js"></script>
+</body>
+</html>
