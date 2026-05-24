@@ -6,13 +6,20 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+
+// 🎯 [মেগা সকেট প্রোটোকল লক]: রেন্ডার হোস্টিং সার্ভারের জন্য CORS এবং সকেট পথ ১০০% এরর-প্রুফ লক করা হলো ভাই
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, './')));
 
-// 🎰 আপনার ওরিজিনাল মেইন সাইটের ডাটাবেজ ব্যাকএন্ড লিঙ্ক (১০০% একুরেট সিঙ্ক)
-const MAIN_SITE_URL = "https://betlover247.onrender.com"; 
+// 🎰 আপনার ওরিজিনাল মেইন সাইটের ডাটাবেজ ব্যাকএন্ড লিঙ্ক
+const MAIN_SITE_URL = "https://onrender.com"; 
 
 // ⏱️ উইনগো গেমের ডাইনামিক লাইভ স্টেট কন্টেইনার
 let wingoStates = {
@@ -27,20 +34,16 @@ setInterval(() => {
     Object.keys(wingoStates).forEach(mode => {
         wingoStates[mode].timeLeft--;
         
-        // কাউন্টডাউন শেষ হলে নতুন রেজাল্ট জেনারেট প্রোটোকল
         if (wingoStates[mode].timeLeft <= 0) {
             wingoStates[mode].timeLeft = parseInt(mode);
             
-            // ০ থেকে ৯ পর্যন্ত ১০০% একুরেট ক্যাসিনো র্যান্ডম নাম্বার মেকার
             const finalNumber = Math.floor(Math.random() * 10);
             let finalSize = (finalNumber >= 5) ? "Big" : "Small";
             
-            // অফিশিয়াল কালার ট্র্যাকার রুলস সিঙ্ক
             let finalColor = "Green";
             if ([2, 4, 6, 8].includes(finalNumber)) finalColor = "Red";
             if ([0, 5].includes(finalNumber)) finalColor = "Violet";
 
-            // সকেটের মাধ্যমে লাইভ উইন-লস রেজাল্ট সব ইউজারের স্ক্রিনে একসাথে পাঠানো হলো
             io.emit("wingoResult", {
                 mode: parseInt(mode),
                 period: wingoStates[mode].period,
@@ -53,21 +56,23 @@ setInterval(() => {
         }
     });
     
-    // প্রতি সেকেন্ডে সব লাইভ ব্রাউজারে ঘড়ির কাঁটা নিখুঁত সিঙ্ক করা হচ্ছে
     io.emit("wingoUpdate", wingoStates);
 }, 1000);
 
-// 🛫 উইনগো রিয়েল ব্যালেন্স কাটার এক্সপ্রেস এপিআই রাউট (আপনার অরিজিনাল মেইন সাইটের userId প্যারামিটার সিঙ্ক)
+// সকেট কানেকশন ট্র্যাকিং প্রোটোকল
+io.on('connection', (socket) => {
+    socket.emit("wingoUpdate", wingoStates);
+});
+
+// 🛫 উইনগো রিয়েল ব্যালেন্স কাটার এক্সপ্রেস এপিআই রাউট
 app.post('/api/wingo-bet', async (req, res) => {
     const { userId, amount, wallet, selection, mode, period } = req.body;
 
-    // শেষ ৫ সেকেন্ডে বাজি ধরা কড়া নিয়মে লকড (লেট-বেট প্রোটেকশন)
     if (wingoStates[mode] && wingoStates[mode].timeLeft <= 5) {
         return res.json({ success: false, message: "⚠️ Round locked! Wait for next round." });
     }
 
     try {
-        // 🎲 [ওরিজিনাল ডাটাবেজ ব্যালেন্স রুট]: এটি সরাসরি আপনার পিএইচপি গেটওয়েতে হিট করে ওয়ালেট থেকে টাকা কাটবে
         const response = await axios.post(MAIN_SITE_URL + '/api_callback.php', { 
             action: "bet", 
             username: userId, 
@@ -79,7 +84,6 @@ app.post('/api/wingo-bet', async (req, res) => {
         });
 
         if (response.data && response.data.status === "ok") {
-            // বাজি সফল হলে সকেটের মাধ্যমে ব্যালেন্স লাইভ রিফ্রেশ পাঠানো হচ্ছে
             io.emit("balanceUpdate", { username: userId, balance: response.data.balance });
             res.json({ success: true, balance: response.data.balance });
         } else { 
