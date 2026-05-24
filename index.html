@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BETLOVER24 WinGo</title>
+    <title>BETLOVER24 Color-Trade</title>
     <style>
         /* 🎨 ওরিজিনাল কালার ও থিম রুট */
         :root { --primary: #f44d4d; --green: #28a745; --violet: #9c27b0; --red: #dc3545; --dark: #333; }
@@ -11,18 +11,12 @@
         
         .app-container { width: 100%; max-width: 360px; background: white; border: 2px solid var(--dark); border-radius: 12px; padding: 10px; box-sizing: border-box; }
         
-        /* 🎫 BETLOVER24 BALANCE MENU */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #fff; border: 2px solid var(--dark); border-radius: 8px; margin-bottom: 15px; }
-        .logo-text { font-weight: bold; font-size: 14px; color: var(--dark); }
-        .balance-box { border: 2px solid var(--dark); padding: 4px 12px; font-weight: bold; border-radius: 5px; font-size: 13px; background: #fff; }
-        .menu-icon { font-size: 22px; cursor: pointer; font-weight: bold; }
-        
         /* ⏳ টাইম ট্যাব - অনলাইন মোড */
         .tabs { display: flex; background: #ff4d4d; border-bottom: 2px solid var(--dark); border-radius: 8px 8px 0 0; overflow: hidden; margin-bottom: 2px; }
         .tab { flex: 1; padding: 10px 2px; text-align: center; font-size: 11px; cursor: pointer; font-weight: bold; color: #333; background: #fff; border-right: 1px solid #ddd; }
         .tab.active { background: var(--primary); color: white !important; }
         
-        /* ⏰ টাইমারカード */
+        /* ⏰ টাইমার কার্ড */
         .timer-card { background: var(--primary); margin: 0; padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--dark); border-top: none; border-radius: 0 0 8px 8px; margin-bottom: 15px; }
         .timer-val { font-size: 28px; font-weight: bold; letter-spacing: 2px; font-family: monospace; }
         
@@ -78,10 +72,9 @@
 <body>
 
 <div class="app-container">
-    <div class="header">
-        <div class="logo-text">BETLOVER24</div>
-        <div class="balance-box" id="user-balance">Balance</div>
-        <div class="menu-icon">☰</div>
+    <!-- 🎯 [ক্যাসিনো ব্র্যান্ড লোগো লক ২.০]: গেমের নাম ১০০% মিলিয়ে 'Color-Trade' অফিশিয়াল লোগো সেট করা হলো ভাই -->
+    <div style="text-align: center; padding: 10px 0; margin-bottom: 12px; background: #fff; border: 2px solid var(--dark); border-radius: 8px; font-weight: bold; font-size: 15px; letter-spacing: 1px; color: var(--dark); box-shadow: 0 2px var(--dark);">
+        🎰 BETLOVER24 COLOR-TRADE
     </div>
 
     <div class="tabs">
@@ -144,3 +137,8 @@
 <!-- মডাল উইন্ডো পপআপ ট্যাগস -->
 <div class="overlay" id="over" onclick="closePop()"></div>
 <div class="modal" id="nodal">
+    <div class="m-header">WinGo <span id="m-mode-txt">30s</span><span class="sel-tag" id="sel">-</span></div>
+    <div class="chip-row">
+        <div class="chip active" onclick="setBase(10, this)">10</div>
+        <div class="chip" onclick="setBase(100, this)">100</div>
+        <div class="chip" onclick="setBase(500, this)">500</div>
