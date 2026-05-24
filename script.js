@@ -119,4 +119,4 @@ async function confirmBet() {
         console.error("WinGo connection error:", error);
         alert("⚠️ Connection Timeout!");
     }
-}
+
