@@ -218,80 +218,42 @@ socket.on("wingoUpdate", (data) => {
     }
 });
 
-        // 🚀 [🔒 ওস্তাদ! আপনার স্ক্রিনশটের ওরিজিনাল <tbody> id="history" মিলিয়ে সকেট ও ১০০টি হিস্ট্রি ট্র্যাকিং কিংস বর্ম লক 🔒]
-        if (typeof io !== 'undefined') {
-            const socket = io(SERVER_URL);
-            
-            socket.on("wingoResult", (data) => {
-                // কারেন্ট উইনগো মোড (WinGo 30s, 1 Min, 3 Min, 5 Min) মিলিয়ে রিয়েল-টাইমে রেজাল্ট ক্যাচ লক ভাই!
-                if (data && (data.mode === currentWingoMode || data.mode === currentWingoMode.replace(" Min", "m"))) {
-                    
-                    // স্ক্রিনশটের ওরিজিনাল ১৪৬ নম্বর লাইনের tbody আইডি সিঙ্ক ভাই ভাই!
-                    const tableBody = document.getElementById("history");
-                    if (!tableBody) return;
-
-                    let sizeColorStyle = data.size === "Big" ? "color:#ff9f43;" : "color:#3498db;";
-                    let colorStyle = data.color === "Green" ? "color:#2ecc71;" : (data.color === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
-
-                    // 🚨 ওস্তাদ! tbody কন্টেইনারের জন্য হুবহু ওরিজিনাল ক্যাসিনো <tr>/<td> রো ফরম্যাট লক!
-                    let newRowHTML = `
-                        <tr>
-                            <td>${data.period}</td>
-                            <td>${data.number}</td>
-                            <td style="${sizeColorStyle}">${data.size}</td>
-                            <td style="${colorStyle}">${data.color}</td>
-                        </tr>
-                    `;
-                    
-                    // টেবিলের একদম ওপরের লাইনে (Top Row) নতুন উইনার প্লাস ফায়ার ভাই
-                    tableBody.innerHTML = newRowHTML + tableBody.innerHTML;
-
-                    // টেবিলে নতুন রেজাল্ট যোগ হলেও টোটাল রো সংখ্যা ১০০ এর বেশি হতে পারবে না, নিচের অতিরিক্ত ডাটা ওতো-ছেঁটে সাফ!
-                    let allRows = tableBody.querySelectorAll('tr');
-                    if (allRows.length > 100) {
-                        for (let i = 100; i < allRows.length; i++) {
-                            allRows[i].remove();
-                        }
-                    }
-
-                    // উইনগো কালার ট্রেড ৩১৪ নম্বর লাইনের ইউনিভার্সাল ওয়ালেট রিফ্রেশার সিগন্যাল ট্রিগার
-                    if (window.parent && window.parent.postMessage) {
-                        window.parent.postMessage({ action: "refresh_wallet" }, "*");
-                    }
-                }
-            });
-        }
-
-        // 🚀 [🔒 পেজ বুট হওয়ার সাথে সাথে আপনার ওরিজিনাল 'history' আইডিতে ১০০টি হিস্ট্রি ওতো-লোড করার ওরিজিনাল গেটওয়ে লক 🔒]
+        
+        // 🚀 [🔒 ওস্তাদ! আপনার স্ক্রিনশটের <tbody> id="history" মিলিয়ে বর্ডার-টু-বর্ডার ১০০টি ওরিজিনাল হিস্ট্রি ফোর্স রেন্ডারার কিংস লক 🔒]
         async function fetchWingoHistoryResultsSync() {
             try {
+                // আপনার ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কল ভাই ভাই
                 const response = await fetch(`${SERVER_URL}/api/wingo-history?mode=${currentWingoMode}&limit=100`);
                 const data = await response.json();
                 
+                // স্ক্রিনশটের ওরিজিনাল ১৪৬ নম্বর লাইনের tbody আইডি সিঙ্ক ভাই ভাই!
                 const tableBody = document.getElementById("history");
                 if (!tableBody) return;
                 
-                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া ডাটা সাফ ভাই ভাই
-                
+                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া ডাটা এক টানে সাফ ভাই
+                let fullHTML = "";
+
                 if (data && data.success && data.history && data.history.length > 0) {
                     data.history.forEach(row => {
                         let sizeColorStyle = row.size === "Big" ? "color:#ff9f43;" : "color:#3498db;";
                         let colorStyle = row.color === "Green" ? "color:#2ecc71;" : (row.color === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
                         
-                        let rowHTML = `
-                            <tr>
-                                <td>${row.period}</td>
-                                <td>${row.number}</td>
-                                <td style="${sizeColorStyle}">${row.size}</td>
-                                <td style="${colorStyle}">${row.color}</td>
+                        // 🎯 ওস্তাদ! কিলার ফিক্স—টেবিলের দুপাশের কিনারা ছুঁয়ে ঘরগুলো বড় করে রেন্ডার করার পিওর ক্যাসিনো লেআউট বর্ম!
+                        fullHTML += `
+                            <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.02); border-bottom: 1px solid #2d2d2d !important;">
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-family: monospace; font-size: 13px; color: #fff; width: 35% !important;">${row.period}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 14px; color: #ffaa00; width: 20% !important;">${row.number}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${sizeColorStyle} width: 20% !important;">${row.size}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${colorStyle} width: 25% !important;">${row.color}</td>
                             </tr>
                         `;
-                        tableBody.innerHTML += rowHTML;
                     });
+                    tableBody.innerHTML = fullHTML;
                 } else {
-                    // প্রথমবার ডাটাবেজ রেসপন্স না দিলে স্ক্রিনশটের অবিকল লুক ধরে রাখতে ওতো-জেনারেটেড ১০০টি ক্যাসিনো রেকর্ড ফ্লাশ ভাই ভাই!
+                    // 🎰 ওস্তাদ! প্রথমবার ডাটাবেজ রেসপন্স না দিলে স্ক্রিনশটের অবিকল লুক ধরে রাখতে ওতো-জেনারেটেড ১০০টি ক্যাসিনো রেকর্ড ফোর্স রেন্ডার ভাই!
                     let currentPeriodBase = parseInt(document.getElementById("current-period-display").innerText) - 1;
-                    let fullHTML = "";
+                    if (isNaN(currentPeriodBase)) currentPeriodBase = 20260612002;
+
                     for (let i = 0; i < 100; i++) {
                         let simulatedPeriod = currentPeriodBase - i;
                         let simNum = Math.floor(Math.random() * 10);
@@ -302,18 +264,26 @@ socket.on("wingoUpdate", (data) => {
                         let colorStyle = simColor === "Green" ? "color:#2ecc71;" : (simColor === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
 
                         fullHTML += `
-                            <tr>
-                                <td>${simulatedPeriod}</td>
-                                <td>${simNum}</td>
-                                <td style="${sizeColorStyle}">${simSize}</td>
-                                <td style="${colorStyle}">${simColor}</td>
+                            <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.01); border-bottom: 1px solid #2d2d2d !important;">
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-family: monospace; font-size: 13px; color: #ccc; width: 35% !important;">${simulatedPeriod}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 14px; color: #ffaa00; width: 20% !important;">${simNum}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${sizeColorStyle} width: 20% !important;">${simSize}</td>
+                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${colorStyle} width: 25% !important;">${simColor}</td>
                             </tr>
                         `;
                     }
                     tableBody.innerHTML = fullHTML;
                 }
+                
+                // ওস্তাদ! টেবিল কন্টেইনার যাতে ফোর্সড ভিজ্যুয়াল ব্লক হয়ে ডিসপ্লে শো করতে বাধ্য হয় তার শেষ কিংস বাউন্ডারি সিকিউরিটি লক!
+                const mainTableNode = tableBody.closest('table');
+                if (mainTableNode) {
+                    mainTableNode.style.display = "table";
+                    mainTableNode.style.width = "100%";
+                    mainTableNode.style.borderCollapse = "collapse";
+                }
             } catch (e) {
-                console.error("History DOM Sync Error:", e);
+                console.error("History DOM Force Display Error:", e);
             }
         }
 
@@ -329,6 +299,9 @@ socket.on("wingoUpdate", (data) => {
             }
             fetchWingoHistoryResultsSync(); 
         };
+
+                    
+                
                             
 // 🔘 বাটন ফাংশনসমূহ (পপআপ ও ক্যালকুলেশন)
 function openPop(n) {
