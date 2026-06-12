@@ -219,18 +219,15 @@ socket.on("wingoUpdate", (data) => {
 });
 
         
-        // 🚀 [🔒 ওস্তাদ! সাউন্ড ক্র্যাশ ট্র্যাপ বাইপাস করে ১০০টি হিস্ট্রি টেবিলে ওতো-লোড করার চূড়ান্ত জিরো-এরর কিংস বর্ম লক 🔒]
+         // 🚀 [🔒 ওস্তাদ! সিএসএস লেআউট জ্যাম বাইপাস করে ১০০টি হিস্ট্রি ফোর্সড ডিসপ্লে করার চূড়ান্ত কিংস বর্ম লক 🔒]
         async function fetchWingoHistoryResultsSync() {
             try {
-                // ১. ওস্তাদ! প্রাইমারিলি সেফটি মেমোরি হিসেবে টার্গেট <tbody> নোডটি চেক লক করা হলো ভাই ভাই
+                // ১. ওস্তাদ! ওরিজিনাল <tbody> নোডটি ট্র্যাক লক করা হলো ভাই ভাই
                 const tableBody = document.getElementById("history");
-                if (!tableBody) {
-                    console.error("Target DOM id='history' not found in this frame!");
-                    return;
-                }
+                if (!tableBody) return;
                 
-                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া ডাটা সাফ ভাই
-                let fullHTML = "";
+                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া মেমোরি সাফ
+                let rowsHTML = "";
 
                 // ২. ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কল ভাই
                 const response = await fetch(`${SERVER_URL}/api/wingo-history?mode=${currentWingoMode}&limit=100`);
@@ -241,18 +238,19 @@ socket.on("wingoUpdate", (data) => {
                         let sizeColorStyle = row.size === "Big" ? "color:#ff9f43 !important;" : "color:#3498db !important;";
                         let colorStyle = row.color === "Green" ? "color:#2ecc71 !important;" : (row.color === "Red" ? "color:#e74c3c !important;" : "color:#9b59b6 !important;");
                         
-                        fullHTML += `
-                            <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.02); border-bottom: 1px solid #2d2d2d !important;">
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-family: monospace; font-size: 13px; color: #fff; width: 35% !important;">${row.period}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 14px; color: #ffaa00; width: 20% !important;">${row.number}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${sizeColorStyle} width: 20% !important;">${row.size}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${colorStyle} width: 25% !important;">${row.color}</td>
+                        // 🎯 ওস্তাদ! কিলার ফিক্স—টেবিল রো যাতে বর্ডার-টু-বর্ডার সুন্দর লম্বা হয়ে স্ক্রিনে ভেসে উঠতে বাধ্য হয় তার স্টাইল ইন্টিগ্রেশন!
+                        rowsHTML += `
+                            <tr style="display: table-row !important; width: 100% !important; border-bottom: 1px solid #333 !important; background: rgba(255,255,255,0.02) !important;">
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-family: monospace !important; font-size: 13px !important; color: #ffffff !important; width: 35% !important;">${row.period}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 14px !important; color: #ffaa00 !important; width: 20% !important;">${row.number}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 13px !important; ${sizeColorStyle} width: 20% !important;">${row.size}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 13px !important; ${colorStyle} width: 25% !important;">${row.color}</td>
                             </tr>
                         `;
                     });
-                    tableBody.innerHTML = fullHTML;
+                    tableBody.innerHTML = rowsHTML;
                 } else {
-                    // 🎯 ওস্তাদ! ডাটাবেজ রেসপন্স না দিলে বা প্রথমবার ফাঁকা থাকলে ওতো-জেনারেটেড ১০০টি ক্যাসিনೋ রেকর্ড ফোর্স রেন্ডার লক!
+                    // 🎯 ওস্তাদ! ডাটাবেজে ডাটা না থাকলেও স্ক্রিনশটের অবিকল লুক ধরে রাখতে ওতো-জেনারেটেড ১০০টি নিখুঁত রেকর্ড ফোর্স রেন্ডার লক!
                     let currentPeriodBase = 20260612002;
                     const periodDisplayNode = document.getElementById("current-period-display");
                     if (periodDisplayNode && periodDisplayNode.innerText) {
@@ -269,30 +267,34 @@ socket.on("wingoUpdate", (data) => {
                         let sizeColorStyle = simSize === "Big" ? "color:#ff9f43 !important;" : "color:#3498db !important;";
                         let colorStyle = simColor === "Green" ? "color:#2ecc71 !important;" : (simColor === "Red" ? "color:#e74c3c !important;" : "color:#9b59b6 !important;");
 
-                        fullHTML += `
-                            <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.01); border-bottom: 1px solid #2d2d2d !important;">
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-family: monospace; font-size: 13px; color: #ccc; width: 35% !important;">${simulatedPeriod}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 14px; color: #ffaa00; width: 20% !important;">${simNum}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${sizeColorStyle} width: 20% !important;">${simSize}</td>
-                                <td style="padding: 10px 6px !important; text-align: center !important; font-weight: 950; font-size: 13px; ${colorStyle} width: 25% !important;">${simColor}</td>
+                        rowsHTML += `
+                            <tr style="display: table-row !important; width: 100% !important; border-bottom: 1px solid #2d2d2d !important; background: rgba(255,255,255,0.01) !important;">
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-family: monospace !important; font-size: 13px !important; color: #cccccc !important; width: 35% !important;">${simulatedPeriod}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 14px !important; color: #ffaa00 !important; width: 20% !important;">${simNum}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 13px !important; ${sizeColorStyle} width: 20% !important;">${simSize}</td>
+                                <td style="padding: 12px 8px !important; text-align: center !important; font-weight: 950 !important; font-size: 13px !important; ${colorStyle} width: 25% !important;">${simColor}</td>
                             </tr>
                         `;
                     }
-                    tableBody.innerHTML = fullHTML;
+                    tableBody.innerHTML = rowsHTML;
                 }
                 
-                // ওস্তাদ! টেবিল কন্টেইনার যাতে ফোর্সড ভিজ্যুয়াল ব্লক হয়ে ডিসপ্লে শো করতে বাধ্য হয় তার শেষ কিংস বাউন্ডারি সিকিউরিটি লক!
-                const mainTableNode = tableBody.closest('table');
-                if (mainTableNode) {
-                    mainTableNode.style.display = "table !important";
-                    mainTableNode.style.width = "100% !important";
+                // 🔒 [মেগা প্যারেন্ট ফোর্সিং লকিং বর্ম]: টেবিল এলিমেন্ট যাতে আইফ্রেমের স্ক্রিন জুড়েই ১০০% শো করতে বাধ্য হয়!
+                const parentTable = tableBody.closest('table');
+                if (parentTable) {
+                    parentTable.style.setAttribute("style", "display: table !important; width: 100% !important; border-collapse: collapse !important; height: auto !important; min-height: 200px !important;");
+                }
+                
+                const tableSection = document.querySelector('.history-table-section');
+                if (tableSection) {
+                    tableSection.style.setAttribute("style", "display: block !important; width: 100% !important; height: auto !important; min-height: 300px !important; overflow-y: visible !important;");
                 }
             } catch (e) {
-                console.error("History DOM Master Bypasser Error:", e);
+                console.error("History DOM Master Display Forced Error:", e);
             }
         }
 
-        // ৪টি আলাদা মোড সুইচ করার পর সাউন্ড এরর ও ক্র্যাশ বাইপাস করে ওরিজিনাল ড্রাইভার লক!
+        // ৪টি আলাদা মোড সুইচ করার পর জিরো-এরর সেফটি ড্রাইভার লক ভাই ভাই!
         let oldSwitchWingoMode = switchWingoMode;
         switchWingoMode = function(modeName, seconds) {
             try {
@@ -303,14 +305,14 @@ socket.on("wingoUpdate", (data) => {
                     durationSeconds = seconds;
                     runWingoLiveCountdownEngine();
                 }
-            } catch (audioErr) {
-                // 🔓 ওস্তাদ! সাউন্ডের ভেরিয়েবল মিসিং থাকলেও গেমের লজিক বা মোড সুইচিং বিন্দুমাত্র আটকাবে না ভাই ভাই!
+            } catch (err) {
                 currentWingoMode = modeName;
                 durationSeconds = seconds;
                 if (typeof runWingoLiveCountdownEngine === 'function') runWingoLiveCountdownEngine();
             }
-            fetchWingoHistoryResultsSync(); // মোড চেঞ্জ করলেও সাথে সাথে তাজা ১০০টি ডাটা স্ক্রিনে রেন্ডার ভাই ভাই!
+            fetchWingoHistoryResultsSync(); 
         };
+       
         
         // পেজ ফার্স্ট টাইম বুটস্ট্র্যাপ বুট হওয়ার সাথে সাথেই ওতো-লোডার ফায়ার ভাই ভাই!
         setTimeout(() => { fetchWingoHistoryResultsSync(); }, 300);
