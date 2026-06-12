@@ -218,16 +218,54 @@ socket.on("wingoUpdate", (data) => {
     }
 });
 
-// 🏆 রেজাল্ট হিস্টোরি টেবিল সিঙ্ক
-socket.on("wingoResult", (data) => {
-    if (data && data.mode === mode) {
-        let sizeColor = data.size === "Big" ? "color:#ffa000;" : "color:#40c4ff;";
-        let clrColor = data.color === "Green" ? "color:var(--green);" : (data.color === "Red" ? "color:var(--red);" : "color:var(--violet);");
-        let row = "<tr><td>" + data.period + "</td><td>" + data.number + "</td><td style='" + sizeColor + "'>" + data.size + "</td><td style='" + clrColor + "'>" + data.color + "</td></tr>";
-        document.getElementById('history').innerHTML = row + document.getElementById('history').innerHTML;
-        if (window.parent) window.parent.postMessage({ action: "refresh_wallet" }, "*");
-    }
-});
+        // 🚀 [🔒 ওস্তাদ! আপনার পাঠানো পুরনো সকেটের ১০০% ম্যাপ সিঙ্ক ও ১০০টি হিস্ট্রি কন্ট্রোল কিংস বর্ম লক 🔒]
+        if (typeof io !== 'undefined') {
+            const socket = io(SERVER_URL);
+            
+            socket.on("wingoResult", (data) => {
+                // 🎯 ওস্তাদ! কারেন্ট উইনগো মোড (WinGo 30s, 1 Min, 3 Min, 5 Min) মিলিয়ে রিয়েল-টাইমে রেজাল্ট ক্যাচ লক ভাই!
+                if (data && (data.mode === currentWingoMode || data.mode === currentWingoMode.replace(" Min", "m"))) {
+                    
+                    const wrapper = document.getElementById("history-rows-wrapper");
+                    if (!wrapper) return;
+
+                    // আপনার স্ক্রিনশটের অবিকল কালার কোড ও টেক্সট সিঙ্ক ফিক্সড ভাই ভাই!
+                    let sizeColorClass = data.size === "Big" ? "color:#ff9f43;" : "color:#3498db;";
+                    let colorClass = data.color === "Green" ? "lbl-green" : (data.color === "Red" ? "lbl-red" : "lbl-violet");
+                    let clrStyle = data.color === "Green" ? "color:#2ecc71;" : (data.color === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
+
+                    // লাক্সারি ক্যাসিনো ডিভ লেআউটের ঠিক ওপরে (Top Row) নতুন রাউন্ডের তাজা রেজাল্ট ইনজেক্ট ভাই!
+                    let newRowHTML = `
+                        <div class="table-data-row">
+                            <div class="col-per">${data.period}</div>
+                            <div class="col-num">${data.number}</div>
+                            <div class="col-sz" style="${sizeColorClass}">${data.size}</div>
+                            <div class="col-cl ${colorClass}" style="${clrStyle}">${data.color}</div>
+                        </div>
+                    `;
+                    
+                    // টেবিলের একদম ওপরের লাইনে নতুন উইনার প্লাস ফায়ার ভাই
+                    wrapper.innerHTML = newRowHTML + wrapper.innerHTML;
+
+                    // 🚨 [ওস্তাদ! মেগা লকিং—টেবিলে নতুন রেজাল্ট যোগ হলেও টোটাল রো সংখ্যা ১০০ এর বেশি হতে পারবে না, নিচের অতিরিক্ত ডাটা ওতো-ছেঁটে সাফ!]
+                    let allRows = wrapper.querySelectorAll('.table-data-row');
+                    if (allRows.length > 100) {
+                        for (let i = 100; i < allRows.length; i++) {
+                            allRows[i].remove();
+                        }
+                    }
+
+                    // 🎰 [উইনগো কালার ট্রেড ৩১৪ নম্বর লাইনের ইউনিভার্সাল ওয়ালেট রিফ্রেশার সিগন্যাল ট্রিগার]
+                    if (window.parent && window.parent.postMessage) {
+                        window.parent.postMessage({ action: "refresh_wallet" }, "*");
+                    }
+                    if (window.top && window.top.postMessage) {
+                        window.top.postMessage({ action: "refresh_wallet" }, "*");
+                    }
+                }
+            });
+        }
+
 
 // 🔘 বাটন ফাংশনসমূহ (পপআপ ও ক্যালকুলেশন)
 function openPop(n) {
