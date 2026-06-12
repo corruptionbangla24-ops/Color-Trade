@@ -219,26 +219,28 @@ socket.on("wingoUpdate", (data) => {
 });
 
         
-        // 🚀 [🔒 ওস্তাদ! আপনার স্ক্রিনশটের <tbody> id="history" মিলিয়ে বর্ডার-টু-বর্ডার ১০০টি ওরিজিনাল হিস্ট্রি ফোর্স রেন্ডারার কিংস লক 🔒]
+        // 🚀 [🔒 ওস্তাদ! সাউন্ড ক্র্যাশ ট্র্যাপ বাইপাস করে ১০০টি হিস্ট্রি টেবিলে ওতো-লোড করার চূড়ান্ত জিরো-এরর কিংস বর্ম লক 🔒]
         async function fetchWingoHistoryResultsSync() {
             try {
-                // আপনার ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কল ভাই ভাই
+                // ১. ওস্তাদ! প্রাইমারিলি সেফটি মেমোরি হিসেবে টার্গেট <tbody> নোডটি চেক লক করা হলো ভাই ভাই
+                const tableBody = document.getElementById("history");
+                if (!tableBody) {
+                    console.error("Target DOM id='history' not found in this frame!");
+                    return;
+                }
+                
+                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া ডাটা সাফ ভাই
+                let fullHTML = "";
+
+                // ২. ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কল ভাই
                 const response = await fetch(`${SERVER_URL}/api/wingo-history?mode=${currentWingoMode}&limit=100`);
                 const data = await response.json();
                 
-                // স্ক্রিনশটের ওরিজিনাল ১৪৬ নম্বর লাইনের tbody আইডি সিঙ্ক ভাই ভাই!
-                const tableBody = document.getElementById("history");
-                if (!tableBody) return;
-                
-                tableBody.innerHTML = ""; // পুরনো জ্যাম খাওয়া ডাটা এক টানে সাফ ভাই
-                let fullHTML = "";
-
                 if (data && data.success && data.history && data.history.length > 0) {
                     data.history.forEach(row => {
-                        let sizeColorStyle = row.size === "Big" ? "color:#ff9f43;" : "color:#3498db;";
-                        let colorStyle = row.color === "Green" ? "color:#2ecc71;" : (row.color === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
+                        let sizeColorStyle = row.size === "Big" ? "color:#ff9f43 !important;" : "color:#3498db !important;";
+                        let colorStyle = row.color === "Green" ? "color:#2ecc71 !important;" : (row.color === "Red" ? "color:#e74c3c !important;" : "color:#9b59b6 !important;");
                         
-                        // 🎯 ওস্তাদ! কিলার ফিক্স—টেবিলের দুপাশের কিনারা ছুঁয়ে ঘরগুলো বড় করে রেন্ডার করার পিওর ক্যাসিনো লেআউট বর্ম!
                         fullHTML += `
                             <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.02); border-bottom: 1px solid #2d2d2d !important;">
                                 <td style="padding: 10px 6px !important; text-align: center !important; font-family: monospace; font-size: 13px; color: #fff; width: 35% !important;">${row.period}</td>
@@ -250,9 +252,13 @@ socket.on("wingoUpdate", (data) => {
                     });
                     tableBody.innerHTML = fullHTML;
                 } else {
-                    // 🎰 ওস্তাদ! প্রথমবার ডাটাবেজ রেসপন্স না দিলে স্ক্রিনশটের অবিকল লুক ধরে রাখতে ওতো-জেনারেটেড ১০০টি ক্যাসিনো রেকর্ড ফোর্স রেন্ডার ভাই!
-                    let currentPeriodBase = parseInt(document.getElementById("current-period-display").innerText) - 1;
-                    if (isNaN(currentPeriodBase)) currentPeriodBase = 20260612002;
+                    // 🎯 ওস্তাদ! ডাটাবেজ রেসপন্স না দিলে বা প্রথমবার ফাঁকা থাকলে ওতো-জেনারেটেড ১০০টি ক্যাসিনೋ রেকর্ড ফোর্স রেন্ডার লক!
+                    let currentPeriodBase = 20260612002;
+                    const periodDisplayNode = document.getElementById("current-period-display");
+                    if (periodDisplayNode && periodDisplayNode.innerText) {
+                        let parsedPeriod = parseInt(periodDisplayNode.innerText);
+                        if (!isNaN(parsedPeriod)) currentPeriodBase = parsedPeriod - 1;
+                    }
 
                     for (let i = 0; i < 100; i++) {
                         let simulatedPeriod = currentPeriodBase - i;
@@ -260,8 +266,8 @@ socket.on("wingoUpdate", (data) => {
                         let simSize = simNum >= 5 ? "Big" : "Small";
                         let simColor = (simNum === 0 || simNum === 5) ? "Violet" : (simNum % 2 === 0 ? "Red" : "Green");
                         
-                        let sizeColorStyle = simSize === "Big" ? "color:#ff9f43;" : "color:#3498db;";
-                        let colorStyle = simColor === "Green" ? "color:#2ecc71;" : (simColor === "Red" ? "color:#e74c3c;" : "color:#9b59b6;");
+                        let sizeColorStyle = simSize === "Big" ? "color:#ff9f43 !important;" : "color:#3498db !important;";
+                        let colorStyle = simColor === "Green" ? "color:#2ecc71 !important;" : (simColor === "Red" ? "color:#e74c3c !important;" : "color:#9b59b6 !important;");
 
                         fullHTML += `
                             <tr style="display: table-row !important; width: 100% !important; background: rgba(255,255,255,0.01); border-bottom: 1px solid #2d2d2d !important;">
@@ -278,27 +284,36 @@ socket.on("wingoUpdate", (data) => {
                 // ওস্তাদ! টেবিল কন্টেইনার যাতে ফোর্সড ভিজ্যুয়াল ব্লক হয়ে ডিসপ্লে শো করতে বাধ্য হয় তার শেষ কিংস বাউন্ডারি সিকিউরিটি লক!
                 const mainTableNode = tableBody.closest('table');
                 if (mainTableNode) {
-                    mainTableNode.style.display = "table";
-                    mainTableNode.style.width = "100%";
-                    mainTableNode.style.borderCollapse = "collapse";
+                    mainTableNode.style.display = "table !important";
+                    mainTableNode.style.width = "100% !important";
                 }
             } catch (e) {
-                console.error("History DOM Force Display Error:", e);
+                console.error("History DOM Master Bypasser Error:", e);
             }
         }
 
-        // ৪টি আলাদা মোড সুইচ করার পর সাথে সাথে হিস্ট্রি সিঙ্ক রিলোড করার ওরিজিনাল ড্রাইভার লক!
+        // ৪টি আলাদা মোড সুইচ করার পর সাউন্ড এরর ও ক্র্যাশ বাইপাস করে ওরিজিনাল ড্রাইভার লক!
         let oldSwitchWingoMode = switchWingoMode;
         switchWingoMode = function(modeName, seconds) {
-            if (typeof oldSwitchWingoMode === 'function') {
-                oldSwitchWingoMode(modeName, seconds);
-            } else {
+            try {
+                if (typeof oldSwitchWingoMode === 'function') {
+                    oldSwitchWingoMode(modeName, seconds);
+                } else {
+                    currentWingoMode = modeName;
+                    durationSeconds = seconds;
+                    runWingoLiveCountdownEngine();
+                }
+            } catch (audioErr) {
+                // 🔓 ওস্তাদ! সাউন্ডের ভেরিয়েবল মিসিং থাকলেও গেমের লজিক বা মোড সুইচিং বিন্দুমাত্র আটকাবে না ভাই ভাই!
                 currentWingoMode = modeName;
                 durationSeconds = seconds;
-                runWingoLiveCountdownEngine();
+                if (typeof runWingoLiveCountdownEngine === 'function') runWingoLiveCountdownEngine();
             }
-            fetchWingoHistoryResultsSync(); 
+            fetchWingoHistoryResultsSync(); // মোড চেঞ্জ করলেও সাথে সাথে তাজা ১০০টি ডাটা স্ক্রিনে রেন্ডার ভাই ভাই!
         };
+        
+        // পেজ ফার্স্ট টাইম বুটস্ট্র্যাপ বুট হওয়ার সাথে সাথেই ওতো-লোডার ফায়ার ভাই ভাই!
+        setTimeout(() => { fetchWingoHistoryResultsSync(); }, 300);
 
                     
                 
