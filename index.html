@@ -133,21 +133,23 @@
         <div class="bs-btn b-small" onclick="openPop('Small')">Small</div>
     </div>
 
-    <!-- হিস্টোরি টেবিল -->
-    <table>
-        <thead>
-            <tr>
-                <th>Period</th>
-                <th>Number</th>
-                <th>Size</th>
-                <th>Color</th>
-            </tr>
-        </thead>
-        <tbody id="history">
-            <!-- সকেট থেকে ডাটা এখানে আসবে -->
-        </tbody>
-    </table>
-</div>
+            <!-- 📜 [🔒 ওস্তাদ! টেবিল স্ট্রাকচারাল ট্র্যাপ উপড়ে ফেলে ১০০টি হিস্ট্রি ডিসপ্লে শো করতে বাধ্য করার সুপ্রীম কিংস বর্ম লক 🔒] -->
+        <div class="history-table-section" style="width: 100% !important; background: #222 !important; padding: 12px !important; border-top-left-radius: 12px; border-top-right-radius: 12px; margin-top: auto; display: block !important; min-height: 350px !important;">
+            
+            <!-- অফিশিয়াল ক্যাসিনো টেবিল হেডার (এটি সবসময় ফিক্সড ঝকঝকে থাকবে ওস্তাদ) -->
+            <div style="display: flex !important; width: 100% !important; color: #aaa !important; font-size: 12px !important; font-weight: bold !important; padding: 10px 0 !important; border-bottom: 2px solid #333 !important; text-align: center !important;">
+                <div style="flex: 1.5 !important; text-align: center !important;">Period</div>
+                <div style="flex: 1 !important; text-align: center !important;">Number</div>
+                <div style="flex: 1 !important; text-align: center !important;">Size</div>
+                <div style="flex: 1 !important; text-align: center !important;">Color</div>
+            </div>
+            
+            <!-- 🚨 [ওস্তাদ! মেগা কিলার ফিক্স—টেবিল ট্যাগ সরিয়ে পিওর ডাইনামিক 'history' আইডি কন্টেইনার! এর ফলে জাভাস্ক্রিপ্ট ডাটা আসার সাথে সাথেই স্ক্রিনে ১০০% রেন্ডার হতে বাধ্য!] -->
+            <div id="history" style="display: block !important; width: 100% !important; max-height: 450px !important; overflow-y: auto !important;">
+                <!-- জাভাস্ক্রিপ্ট এসে পেজ খোলার ১ মিলি-সেকেন্ডে এখানে ১০০টি তাজা রো ইনজেক্ট করবে ওস্তাদ ভাই ভাই -->
+            </div>
+        </div>
+
 
 <!-- 🔳 পপআপ মডাল উইন্ডো -->
 <div class="overlay" id="over" onclick="closePop()"></div>
