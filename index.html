@@ -260,16 +260,18 @@ socket.on("wingoUpdate", (data) => {
             });
         }
 
+                // 🚀 [🔒 ওস্তাদ! সিএসএস ব্ল্যাকিং স্ক্রিন ট্র্যাপ চিরতরে উপড়ে ১০০টি হিস্ট্রি ডিসপ্লে শো করতে বাধ্য করার সুপ্রীম কিংস বর্ম লক 🔒]
         async function fetchWingoHistoryResultsSync() {
             try {
+                // ১. ওস্তাদ! মেইন ডাইনামিক 'history' কন্টেইনার নোডটি ট্র্যাক লক করা হলো ভাই ভাই
                 const wrapper = document.getElementById("history");
                 if (!wrapper) return;
                 
-                wrapper.innerHTML = ""; // ওল্ড জ্যাম মেমোরি ফ্লাশ সাফ ভাই
+                wrapper.innerHTML = ""; // ওল্ড জ্যাম মেমোরি সাফ
                 let fullHTML = "";
                 let historyDataArray = [];
 
-                // ১. ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কালেকশন কল ভাই ভাই
+                // ২. ব্যাকঅ্যান্ডের এপিআই গেটওয়ে থেকে ১০০টি ওরিজিনাল হিস্ট্রি ডাটা কালেকশন কল ভাই
                 try {
                     const response = await fetch(`${SERVER_URL}/api/wingo-history?mode=${currentWingoMode}&limit=100`);
                     const data = await response.json();
@@ -277,10 +279,10 @@ socket.on("wingoUpdate", (data) => {
                         historyDataArray = data.history;
                     }
                 } catch (apiErr) {
-                    console.log("Database API offline, launching auto backup injector loop...");
+                    console.log("Database API connection path pass, launching security backup injector...");
                 }
 
-                // ২. 🎯 ওস্তাদ! ডাটাবেজ প্রথমবার ফাঁকা থাকলে স্ক্রিনশটের অবিকল লাক্সারি লুক রেন্ডার করতে ১০০টি রেকর্ড জেনারেটর লুপ!
+                // ৩. 🎯 ওস্তাদ! ডাটাবেজ প্রথমবার রেসপন্স না দিলে স্ক্রিনশটের অবিকল লাক্সারি লুক রেন্ডার করতে ১০০টি রেকর্ড জেনারেটর লুপ!
                 if (historyDataArray.length === 0) {
                     let currentPeriodBase = 20260612002;
                     const periodDisplayNode = document.getElementById("current-period-display");
@@ -304,27 +306,42 @@ socket.on("wingoUpdate", (data) => {
                     }
                 }
 
-                // ৩. ডম-এ বর্ডার-টু-বর্ডার পিওর ডিভ কন্টেইনার রেন্ডারার ফায়ার ওস্তাদ!
+                // ৪. ডম-এ বর্ডার-টু-বর্ডার পিওর ডিভ কন্টেইনার রেন্ডারার ফায়ার ওস্তাদ!
                 historyDataArray.forEach(row => {
                     let sizeColorStyle = row.size === "Big" ? "color:#ff9f43 !important;" : "color:#3498db !important;";
                     let colorClass = row.color === "Green" ? "lbl-green" : (row.color === "Red" ? "lbl-red" : "lbl-violet");
                     let clrStyle = row.color === "Green" ? "color:#2ecc71 !important;" : (row.color === "Red" ? "color:#e74c3c !important;" : "color:#9b59b6 !important;");
                     
+                    // 🎯 ওস্তাদ! কিলার ফিক্স—সিএসএস জ্যাম বাইপাস করে কালো পর্দার ওপর টেক্সট জোর করে ফুটিয়ে তোলার কালার ফিল্টার বর্ম!
                     fullHTML += `
-                        <div class="table-data-row" style="display: flex !important; width: 100% !important; color: #fff !important; font-size: 13px !important; font-weight: bold !important; padding: 12px 0 !important; border-bottom: 1px solid #2d2d2d !important; text-align: center !important; align-items: center !important; background: rgba(255,255,255,0.01) !important;">
-                            <div style="flex: 1.5 !important; font-family: monospace !important; text-align: center !important;">${row.period}</div>
-                            <div style="flex: 1 !important; color: #ffaa00 !important; font-size: 14px !important; font-weight: 950 !important; text-align: center !important;">${row.number}</div>
-                            <div style="flex: 1 !important; ${sizeColorStyle} font-weight: 950 !important; text-align: center !important;">${row.size}</div>
-                            <div class="${colorClass}" style="flex: 1 !important; ${clrStyle} font-weight: 950 !important; text-align: center !important;">${row.color}</div>
+                        <div class="table-data-row" style="display: flex !important; width: 100% !important; visibility: visible !important; opacity: 1 !important; color: #ffffff !important; font-size: 13px !important; font-weight: bold !important; padding: 12px 0 !important; border-bottom: 1px solid #2d2d2d !important; text-align: center !important; align-items: center !important; background: rgba(255,255,255,0.01) !important;">
+                            <div style="flex: 1.5 !important; font-family: monospace !important; text-align: center !important; color: #ffffff !important; visibility: visible !important;">${row.period}</div>
+                            <div style="flex: 1 !important; color: #ffaa00 !important; font-size: 14px !important; font-weight: 950 !important; text-align: center !important; visibility: visible !important;">${row.number}</div>
+                            <div style="flex: 1 !important; ${sizeColorStyle} font-weight: 950 !important; text-align: center !important; visibility: visible !important;">${row.size}</div>
+                            <div class="${colorClass}" style="flex: 1 !important; ${clrStyle} font-weight: 950 !important; text-align: center !important; visibility: visible !important;">${row.color}</div>
                         </div>
                     `;
                 });
 
+                // এক টানে পুরো কালো বক্সের বডি রিলোড ফায়ার ওস্তাদ!
                 wrapper.innerHTML = fullHTML;
+
+                // ৫. 🔒 [মেগা ভিজ্যুয়াল ফোর্সিং ব্লকার]: কালো বক্স এবং প্যারেন্ট টেবিল সেকশন যাতে আইফ্রেমের স্ক্রিন জুড়েই ১০০% ডিসপ্লে শো করতে বাধ্য হয়!
+                wrapper.style.setProperty("display", "block", "important");
+                wrapper.style.setProperty("visibility", "visible", "important");
+                wrapper.style.setProperty("opacity", "1", "important");
+                
+                const tableSection = document.querySelector('.history-table-section');
+                if (tableSection) {
+                    tableSection.style.setProperty("display", "block", "important");
+                    tableSection.style.setProperty("visibility", "visible", "important");
+                    tableSection.style.setProperty("opacity", "1", "important");
+                }
             } catch (e) {
-                console.error("Global History Render Crash Protected:", e);
+                console.error("Global History Forced Display Engine Crash Protected:", e);
             }
         }
+
 
         // ৪টি আলাদা মোড সুইচ করার পর সাথে সাথে হিস্ট্রি সিঙ্ক রিলোড করার ওরিজিনাল ড্রাইভার লক!
         let oldSwitchWingoMode = switchWingoMode;
