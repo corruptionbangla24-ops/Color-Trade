@@ -166,6 +166,29 @@ app.post('/api/wingo-bet', async (req, res) => {
     }
 });
 
+// 📜 [🔒 ওস্তাদ! লবির হিস্ট্রি টেবিলে ১০০টি পুরনো পিরিয়ডের রেকর্ড ফরোয়ার্ড করার ব্যাকএন্ড এপিআই রাউট লক 🔒]
+app.get('/api/wingo-history', async (req, res) => {
+    const { mode, limit } = req.query;
+    let maxLimit = parseInt(limit) || 100;
+    
+    // আপনার ওরিজিনাল মেইন সাইটের ডাটাবেজ ব্যাকএন্ড লিঙ্ক
+    const MAIN_SITE_URL = "https://onrender.com"; 
+
+    try {
+        // ওস্তাদ! সরাসরি আপনার মেইন পিএইচপি ডাটাবেজ ব্যাকএন্ড থেকে ১০০টি হিস্ট্রি কালেকশন ফেচ করা হচ্ছে ভাই ভাই!
+        const response = await axios.get(`${MAIN_SITE_URL}/api_callback.php?action=get_history&mode=${mode}&limit=${maxLimit}`, { timeout: 10000 });
+        
+        if (response.data && response.data.status === "ok") {
+            return res.json({ success: true, history: response.data.history.slice(0, maxLimit) });
+        }
+        return res.json({ success: false, history: [] });
+    } catch (e) {
+        console.error("Wingo History Core Database Fetch Error:", e.message);
+        // ডাটাবেজ কানেকশন রেসপন্স না দিলে জিরো-এরর সেফটি হিসেবে খালি অ্যারে রিটার্ন লক ভাই ভাই
+        return res.json({ success: false, history: [] });
+    }
+});
+
 // 🌐 সার্ভার লিসেনিং পোর্ট লক
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
