@@ -196,7 +196,7 @@ app.get('/', (req, res) => {
 });
 
 // 🌐 [🔒 ওস্তাদ! রেন্ডার ও টার্মাক্স সেশন অন-ফায়ার রাখতে ৯৯৯৯ পোর্ট কড়া কিংস বর্ম লক ফায়ার 🔒]
-const PORT = process.env.PORT || 9999;
+const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`🎰 VIP WinGo Color Trade Casino Engine Running on port 9999`);
 });
