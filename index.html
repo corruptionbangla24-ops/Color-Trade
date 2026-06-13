@@ -165,7 +165,7 @@
     // ১ সেকেন্ড পর পর ঘড়ি অটো-আপডেট ফায়ার
     setInterval(runWingoLiveCountdownEngine, 1000);
 
-    // 🚀 [🔒 সকেটে রেজাল্ট আসার সাথে সাথে টেবিলে ১০০% ডিভ রো পুশ করার মাস্টার কিংস লক 🔒]
+    // 🚀 [🔒 ওস্তাদ! বাজি উইন-লস ট্র্যাক করে বড় স্ক্রিন ফ্ল্যাশ এবং win6.mp3 সাউন্ড ইঞ্জিন লক 🔒]
     socket.on("wingoResult", (data) => {
         let modeStringCheck = mode === 30 ? "WinGo 30s" : (mode + "m");
         if (data && (data.mode === modeStringCheck || data.mode === mode + "s" || data.mode === mode)) {
@@ -187,11 +187,62 @@
             
             wrapper.innerHTML = newRowHTML + wrapper.innerHTML;
 
-             // টেবিলে ডাটা ১০০ ক্রস করলে নিচের এক্সট্রা লাইন ওতো-ছেঁটে সাফ!
             let allRows = wrapper.querySelectorAll('.table-data-row');
             if (allRows.length > 100) {
                 for (let i = 100; i < allRows.length; i++) {
                     allRows[i].remove();
+                }
+            }
+
+            // 🎯 [মেগা লকিং বর্ম]: এই নির্দিষ্ট ইউজার উইন নাকি লস খেয়েছে তা রিয়েল-টাইম স্ক্রিন ফ্ল্যাশ সিঙ্ক!
+            let winAmt = 0;
+            let multFactor = 2;
+            if (selectedType === data.color) {
+                winAmt = base * qty * mult * (data.color === "Violet" ? 4.5 : 2);
+            } else if (selectedType === data.size) {
+                winAmt = base * qty * mult * 2;
+            } else if (selectedType === String(data.number)) {
+                winAmt = base * qty * mult * 9;
+            }
+
+            // বাজি ধরা থাকলে তবেই ফ্ল্যাশ স্ক্রিন ফায়ার হবে ওস্তাদ ভাই ভাই
+            if (selectedType !== "") {
+                const flashOverlay = document.getElementById("wingo-flash-overlay");
+                const flashBox = document.getElementById("wingo-flash-box");
+                const flashTitle = document.getElementById("wingo-flash-title");
+                const flashAmount = document.getElementById("wingo-flash-amount");
+
+                if (flashOverlay && flashBox) {
+                    if (winAmt > 0) {
+                        // 🏆 উইন হলে—বড় করে গোল্ডেন উইন টেক্সট ও অ্যামাউন্ট শো এবং win6.mp3 প্লে!
+                        flashTitle.innerText = "WIN";
+                        flashTitle.style.color = "#2ecc71";
+                        flashBox.style.borderColor = "#2ecc71";
+                        flashBox.style.boxShadow = "0 0 35px #2ecc71";
+                        flashAmount.innerText = "৳" + winAmt.toFixed(2);
+                        flashAmount.style.display = "block";
+                        
+                        try {
+                            let winAudio = new Audio('win6.mp3');
+                            winAudio.currentTime = 0;
+                            winAudio.play().catch(e => {});
+                        } catch(ae) {}
+                    } else {
+                        // 💀 লস হলে—শুধু লাল রঙের Loss দেখা যাবে, কোনো অ্যামাউন্ট শো হবে না ভাই!
+                        flashTitle.innerText = "Loss";
+                        flashTitle.style.color = "#e74c3c";
+                        flashBox.style.borderColor = "#e74c3c";
+                        flashBox.style.boxShadow = "0 0 35px #e74c3c";
+                        flashAmount.style.display = "none";
+                    }
+                    
+                    flashOverlay.style.display = "flex";
+                    
+                    // কাঁটায় কাঁটায় মেপে ঠিক ১ সেকেন্ড (১০০০ মিলি-সেকেন্ড) পর পপআপ অটো-ভ্যানিশ হয়ে যাবে ওস্তাদ ভাই ভাই!
+                    setTimeout(() => {
+                        flashOverlay.style.display = "none";
+                        selectedType = ""; // বাজি মেমোরি রিসেট সাফ ভাই ভাই
+                    }, 1000);
                 }
             }
 
