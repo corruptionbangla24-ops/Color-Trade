@@ -95,6 +95,18 @@
         <span class="sel-tag" id="sel">Green</span>
     </div>
     
+    <!-- 🏆 [🔒 ওস্তাদ! উইন-লস বড় স্ক্রিন ফ্ল্যাশ ডিসপ্লে কন্টেইনার ১০০% কিংস বর্ম লক 🔒] -->
+<div id="wingo-flash-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 9999; align-items: center; justify-content: center; font-family: sans-serif;">
+    <div id="wingo-flash-box" style="text-align: center; padding: 30px; border-radius: 16px; border: 4px solid #ffaa00; background: radial-gradient(circle, #222 0%, #111 100%); min-width: 260px; box-shadow: 0 0 30px #ffaa00; animation: wingoPopScale 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;">
+        <div id="wingo-flash-title" style="font-size: 36px; font-weight: 950; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,255,255,0.5); margin-bottom: 10px;">WIN</div>
+        <div id="wingo-flash-amount" style="font-size: 32px; font-weight: 950; font-family: monospace; color: #ffea00; text-shadow: 0 4px 8px rgba(0,0,0,0.8);">৳5000.00</div>
+    </div>
+</div>
+
+<style>
+@keyframes wingoPopScale { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+</style>
+
     <!-- বেস অ্যামাউন্ট চিপস -->
     <div style="font-size: 12px; font-weight: bold; margin-bottom: 5px; color:#333;">Select Amount:</div>
     <div class="chip-row">
