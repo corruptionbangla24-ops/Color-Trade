@@ -1,0 +1,378 @@
+/* ===================================================================================
+   🎰 WinGo COLOR TRADE - PREMIUM CASINO STYLE GLOBAL STYLESHEET
+   =================================================================================== */
+
+/* 🎨 ওরিজিনাল কালার ও থিম রুট */
+:root { 
+    --primary: #f44d4d; 
+    --green: #28a745; 
+    --violet: #9c27b0; 
+    --red: #dc3545; 
+    --dark: #333; 
+}
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    user-select: none; 
+    -webkit-user-select: none; 
+}
+
+body { 
+    font-family: 'Segoe UI', Arial, sans-serif; 
+    background: #161616; 
+    margin: 0; 
+    padding: 5px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    min-height: 100vh;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 🔒 মেইন ক্যাসিনো ভিউপোর্ট কন্টেইনার */
+.app-container { 
+    width: 100%; 
+    max-width: 360px; 
+    background: white; 
+    border: 2px solid var(--dark); 
+    border-radius: 12px; 
+    padding: 10px; 
+    box-sizing: border-box; 
+    display: flex;
+    flex-direction: column;
+    min-height: 98vh;
+    box-shadow: 0 0 25px rgba(0,0,0,0.8);
+    overflow-x: hidden;
+}
+
+/* ⏳ টাইম ট্যাব - অনলাইন মোড */
+.tabs { 
+    display: flex; 
+    background: #ff4d4d; 
+    border: 2px solid var(--dark);
+    border-radius: 8px 8px 0 0; 
+    overflow: hidden; 
+    margin-bottom: 0px; 
+}
+
+.tab { 
+    flex: 1; 
+    padding: 10px 2px; 
+    text-align: center; 
+    font-size: 11px; 
+    cursor: pointer; 
+    font-weight: bold; 
+    color: #333; 
+    background: #fff; 
+    border-right: 1px solid #ddd; 
+    transition: all 0.1s ease;
+}
+
+.tab.active { 
+    background: var(--primary) !important; 
+    color: white !important; 
+}
+
+/* ⏰ টাইমার কার্ড */
+.timer-card { 
+    background: var(--primary); 
+    margin: 0; 
+    padding: 15px; 
+    color: white; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    border: 2px solid var(--dark); 
+    border-top: none; 
+    border-radius: 0 0 8px 8px; 
+    margin-bottom: 15px; 
+}
+
+.timer-val { 
+    font-size: 28px; 
+    font-weight: bold; 
+    letter-spacing: 2px; 
+    font-family: monospace; 
+}
+
+/* 🟢 কালার বাটনসমূহ 🔴 */
+.color-btns { 
+    display: flex; 
+    gap: 8px; 
+    padding: 5px 0px; 
+    margin-bottom: 5px; 
+}
+
+.c-btn { 
+    flex: 1; 
+    padding: 12px 2px; 
+    border: 2px solid var(--dark); 
+    border-radius: 8px; 
+    color: white; 
+    font-weight: bold; 
+    font-size: 13px; 
+    cursor: pointer; 
+    text-align: center; 
+    box-shadow: 0 4px var(--dark); 
+    transition: 0.1s; 
+}
+
+.c-btn:active { 
+    transform: translateY(3px); 
+    box-shadow: 0 1px var(--dark); 
+}
+
+.bg-green { background: var(--green) !important; } 
+.bg-violet { background: var(--violet) !important; } 
+.bg-red { background: var(--red) !important; }
+
+/* 🔢 নম্বর গ্রিড (০ থেকে ৯ সংখ্যা নেভি) */
+.number-grid { 
+    display: grid; 
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 10px; 
+    padding: 0px; 
+    margin-bottom: 15px; 
+}
+
+.n-circle { 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    font-weight: bold; 
+    font-size: 16px; 
+    cursor: pointer; 
+    border: 2px solid var(--dark); 
+    box-shadow: 0 4px var(--dark); 
+    transition: 0.1s; 
+    margin: auto; 
+}
+
+.n-circle:active { 
+    transform: translateY(3px); 
+    box-shadow: 0 1px var(--dark); 
+}
+
+/* 💠 রেড + ভায়োলেট মিক্সড থিম (০ এবং ৫ কালারস) */
+.n-0 { background: linear-gradient(135deg, var(--red) 50%, var(--violet) 50%) !important; }
+.n-5 { background: linear-gradient(135deg, var(--green) 50%, var(--violet) 50%) !important; }
+.n-1, .n-3, .n-7, .n-9 { background: var(--green) !important; }
+.n-2, .n-4, .n-6, .n-8 { background: var(--red) !important; }
+
+/* 🎚️ মাল্টিপ্লায়ার চিপস */
+.multi-row { 
+    display: flex; 
+    gap: 6px; 
+    padding: 0px; 
+    margin-bottom: 15px; 
+}
+
+.m-chip { 
+    flex: 1; 
+    padding: 8px 0; 
+    text-align: center; 
+    font-size: 11px; 
+    font-weight: bold; 
+    border: 2px solid var(--dark); 
+    border-radius: 4px; 
+    background: #fff; 
+    cursor: pointer; 
+    box-shadow: 0 2px var(--dark); 
+    color: #333;
+}
+
+.m-chip.active { 
+    background: var(--green) !important; 
+    color: white !important; 
+    border-color: var(--dark) !important; 
+}
+
+/* 🔸 Big Small 🔹 */
+.bs-row { 
+    display: flex; 
+    padding: 0px; 
+    gap: 10px; 
+    margin-bottom: 20px; 
+}
+
+.bs-btn { 
+    flex: 1; 
+    padding: 12px 2px; 
+    border: 2px solid var(--dark); 
+    color: white; 
+    font-weight: bold; 
+    font-size: 16px; 
+    cursor: pointer; 
+    text-align: center; 
+    border-radius: 8px; 
+    box-shadow: 0 4px var(--dark); 
+    transition: 0.1s; 
+}
+
+.bs-btn:active { 
+    transform: translateY(3px); 
+    box-shadow: 0 1px var(--dark); 
+}
+
+.b-big { background: #ffa000 !important; } 
+.b-small { background: #40c4ff !important; }
+
+/* 📜 [🔒 ওস্তাদ! কালো পর্দা চিরে ১০০টি হিস্ট্রি ডিসপ্লে শো করতে বাধ্য করার সুপ্রীম কিংস সিএসএস লক 🔒] */
+.history-table-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    background: #1e1e1e !important;
+    border: 2px solid var(--dark) !important;
+    border-radius: 12px !important;
+    padding: 10px !important;
+    margin-top: auto !important;
+    min-height: 350px !important;
+}
+
+#history {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+}
+
+.table-data-row {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+}
+
+/* 🟢🟣🔴 কালার টেক্সট লেবেল থিম গ্লো */
+.lbl-green { color: #2ecc71 !important; }
+.lbl-red { color: #e74c3c !important; }
+.lbl-violet { color: #9b59b6 !important; }
+
+/* 🔳 [🔒 পপআপ মডাল এবং ওভারলে থিম ডিজাইন বর্ম লক 🔒] */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 999;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 360px;
+    background: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border: 3px solid var(--dark);
+    border-bottom: none;
+    padding: 18px;
+    z-index: 1000;
+    box-shadow: 0 -5px 25px rgba(0,0,0,0.5);
+    animation: slideUp 0.18s ease-out forwards;
+}
+
+.m-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border: 2px solid var(--dark);
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.sel-tag {
+    background: var(--primary);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.chip-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.chip {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid var(--dark);
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    color: #333;
+}
+
+.chip.active {
+    background: var(--primary) !important;
+    color: white !important;
+}
+
+.qty-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border: 2px solid var(--dark);
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #333;
+}
+
+.confirm-btn {
+    width: 100%;
+    padding: 14px;
+    background: #2ecc71;
+    color: white;
+    font-size: 16px;
+    font-weight: 950;
+    border: 2px solid var(--dark);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px var(--dark);
+    text-transform: uppercase;
+}
+
+.confirm-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px var(--dark);
+}
+
+@keyframes slideUp {
+    from { bottom: -400px; }
+    to { bottom: 0; }
+}
