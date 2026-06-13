@@ -165,6 +165,7 @@
     // ১ সেকেন্ড পর পর ঘড়ি অটো-আপডেট ফায়ার
     setInterval(runWingoLiveCountdownEngine, 1000);
 
+               
     // 🚀 [🔒 ওস্তাদ! বাজি উইন-লস ট্র্যাক করে বড় স্ক্রিন ফ্ল্যাশ এবং win6.mp3 সাউন্ড ইঞ্জিন লক 🔒]
     socket.on("wingoResult", (data) => {
         let modeStringCheck = mode === 30 ? "WinGo 30s" : (mode + "m");
@@ -251,6 +252,8 @@
             }
         }
     });
+
+            
 
     // 🚀 [🔒 পেজ খোলার সাথে সাথে ১০০টি হিস্ট্রি বর্ডার-টু-বর্ডার ডিসপ্লে শো করতে বাধ্য করার কিংস লক 🔒]
     async function fetchWingoHistoryResultsSync() {
